@@ -1,4 +1,4 @@
-flywheel-sdk ~= 14.6.5
+flywheel-sdk
 pandas
 bids-validator
 validators
@@ -6,6 +6,5 @@ sphinx-argparse
 commonmark
 pathvalidate
 pytest
-nibabel
 pytest-cov
 heudiconv

@@ -4,7 +4,6 @@ import os
 import warnings
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=UserWarning)
-    from nibabel.nicom.dicomwrappers import wrapper_from_data
 
 
 CONVERTABLE_TYPES = ("bvec", "bval", "nifti")
@@ -63,15 +62,30 @@ def acquisition_to_heudiconv(client, acq, context):
         zip_info = None
         dcm_info = {}
     # Make it a nicom wrapper to handle all sorts of different dicom styles
-    mw = wrapper_from_data(dcm_info)
+    #mw = wrapper_from_data(dcm_info)
+    #log.info("mw.image_shape = '{}'".format(mw.image_shape))
     num_dicoms = len(zip_info.members) if zip_info else -1
-    image_shape = mw.image_shape
-    if image_shape is None:
-        image_shape = (-1, -1, -1, -1)
-    else:
-        image_shape = mw.image_shape + (num_dicoms,)
-        while len(image_shape) < 4:
-            image_shape = image_shape + (-1,)
+    #image_shape = mw.image_shape
+    #if image_shape is None:
+    #    image_shape = (-1, -1, -1, -1)
+    #else:
+        #image_shape = mw.image_shape + (num_dicoms,)
+    #    while len(image_shape) < 4:
+    #        image_shape = image_shape + (-1,)
+
+    Rows = -1
+    if "Rows" in dcm_info:
+        Rows = dcm_info["Rows"]
+
+    Columns = -1 
+    if ("Columns" in dcm_info):
+        Columns = dcm_info["Columns"]
+
+    image_shape = (-1, -1, -1, -1)
+    if (Rows > 0 and Columns > 0):
+       image_shape = (Rows, Columns, num_dicoms, -1)
+
+    log.info("{}: Image Shape = '{}', num_dicoms = '{}'".format(acq.label,image_shape,num_dicoms))
 
     for fileobj in acq.files:
         log.debug('filename: %s', fileobj.name)
@@ -80,7 +94,7 @@ def acquisition_to_heudiconv(client, acq, context):
         info = fileobj.info
 
         # Make it a nicom wrapper to handle all sorts of different dicom styles
-        mw = wrapper_from_data(info)
+        #mw = wrapper_from_data(info)
 
         log.debug('uid: %s', info.get("SeriesInstanceUID"))
         to_convert.append(SeqInfo(

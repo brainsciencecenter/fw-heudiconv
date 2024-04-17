@@ -15,7 +15,6 @@ dependencies:
 - sphinx_rtd_theme
 - mock
 - future
-- nibabel
 - statsmodels
 - xvfbwrapper
 - configparser

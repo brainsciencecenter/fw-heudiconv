@@ -16,14 +16,13 @@ setuptools.setup(
     url="https://github.com/PennBBL/fw_heudiconv",
     packages=setuptools.find_packages(),
     install_requires=[
-        "flywheel-sdk~=14.6.5",
+        "flywheel-sdk~=18.1.1",
         "pandas",
         "bids-validator",
         "validators",
         "pathvalidate",
         "pytest",
         "pytest-cov",
-        "nibabel",
         "heudiconv"
     ],
     classifiers=[
