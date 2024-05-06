@@ -15,6 +15,9 @@ logger.info("{:=^70}\n".format(": fw-heudiconv gear manager starting up :"))
 
 # start up inputs
 invocation = json.loads(open('config.json').read())
+
+logger.info(json.dumps(invoication, indent=2))
+
 config = invocation['config']
 inputs = invocation['inputs']
 destination = invocation['destination']
